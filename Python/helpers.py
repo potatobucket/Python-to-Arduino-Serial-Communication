@@ -30,3 +30,9 @@ class Text:
                 stringChunk += word
         stringArray.append(stringChunk)
         return stringArray
+    
+    def __repr__(self):
+        return f"Text({self.text})"
+    
+    def __str__(self):
+        return f"{self.text}"

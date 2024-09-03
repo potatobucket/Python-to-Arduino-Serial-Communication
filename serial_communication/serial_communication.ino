@@ -1,7 +1,7 @@
 //-- Libraries
-#include <Wire.h>
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
+#include <Wire.h>
 
 //-- Definitions and Variable Declaration
 #define SCREEN_WIDTH 128
@@ -11,10 +11,11 @@
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire1, OLED_RESET);
 
+const String AFFIRMATIVE = "Job's done!";
 const int COLOR = 1;
+const int MAX_CAPACITY = 1024;
 
-String affirmative = "Job's done!"
-String marquee;
+String text;
 
 /* -- Older stuff and/or stuff that didn't (doesn't?) work
  char* marquee;
@@ -23,6 +24,10 @@ String marquee;
 */
 
 //-- Functions (may create custom header to hold)
+unsigned char* gather_bytes(){
+  unsigned char *bitmapBytes[MAX_CAPACITY];
+};
+
 void display_text_OLED(String string){
   display.clearDisplay();
   display.setTextSize(1);
@@ -32,10 +37,21 @@ void display_text_OLED(String string){
   display.display();
 };
 
-void push_to_display(String whatToPush){
-  marquee = Serial.readString();
+void display_bitmap(const unsigned char *BITMAP_IMAGE){
+  display.clearDisplay();
+  display.drawBitmap(0, 0, BITMAP_IMAGE, SCREEN_WIDTH, SCREEN_HEIGHT, COLOR);
+  display.display();
+};
+
+void push_text_to_display(String whatToPush){
   display_text_OLED(whatToPush);
-  respond(affirmative);
+  respond(AFFIRMATIVE);
+};
+
+void push_bitmap_to_display(){
+  const unsigned char PROGMEM IMAGE[] = {};
+  display_bitmap(IMAGE);
+  respond(AFFIRMATIVE);
 };
 
 void respond(String response){
@@ -53,6 +69,6 @@ void setup() {
 
 void  loop() {
   while (!Serial.available());
-  marquee = Serial.readString();
-  push_to_display(marquee);
+  text = Serial.readString();
+  push_text_to_display(text);
 }
