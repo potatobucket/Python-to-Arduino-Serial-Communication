@@ -1,8 +1,9 @@
-// Libraries
+//-- Libraries
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
 
+//-- Definitions and Variable Declaration
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 #define SCREEN_ADDRESS 0x3D
@@ -14,12 +15,14 @@ const int COLOR = 1;
 
 String affirmative = "Job's done!"
 String marquee;
-// char* marquee;
 
-// int x;
+/* -- Older stuff and/or stuff that didn't (doesn't?) work
+ char* marquee;
+ int x;
+ String response = "And all the clouds that lour'd upon our house in the deep bosom of the ocean buried.";
+*/
 
-// String response = "And all the clouds that lour'd upon our house in the deep bosom of the ocean buried.";
-
+//-- Functions (may create custom header to hold)
 void display_text_OLED(String string){
   display.clearDisplay();
   display.setTextSize(1);
@@ -39,6 +42,8 @@ void respond(String response){
   Serial.print(response);
 };
 
+
+//-- The stuff that does the things
 void setup() {
   Serial.begin(115200);
   display.begin();
