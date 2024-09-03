@@ -11,6 +11,6 @@ def write_read(x):
 
 if __name__ == "__main__":
     while True: 
-        num = input("Enter a number: ") # Taking input from user 
-        value = write_read(num) 
+        quote = input("When is the winter of our discontent and by whom was it made glorious? ") # Taking input from user 
+        value = str(write_read(quote))
         print(value) # printing the value 
