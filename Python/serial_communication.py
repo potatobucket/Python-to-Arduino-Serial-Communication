@@ -1,3 +1,5 @@
+#-- TODO: fix word wrap so that words larger than max screen size work correctly when placed in a sentence
+
 import helpers
 import serial
 import time
