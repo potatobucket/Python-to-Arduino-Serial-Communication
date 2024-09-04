@@ -17,14 +17,14 @@ Returns a touple of the first part of the word (frontChunk + a hyphen) and the r
     return f"{frontChunk}-", backChunk
 
 def parse_large_word_to_one_line(wordToTest: str, lengthToCheck: int, splitArray: list):
-    if is_word_too_large(wordToTest, lengthToCheck) == True:
-        splitLargeWordFront, splitLargeWordBack = split_large_word(wordToTest, lengthToCheck - 1)
-        splitArray.append(splitLargeWordFront) #-- <this seems to be the answer to the problem. We'll see!
-        while is_word_too_large(splitLargeWordBack, lengthToCheck) == True:
-            splitLargeWordFront, splitLargeWordBack = split_large_word(splitLargeWordBack, lengthToCheck - 1)
-            splitArray.append(splitLargeWordFront)
-        # splitArray.append(splitLargeWordBack)
-        return splitLargeWordBack
+    # if is_word_too_large(wordToTest, lengthToCheck) == True:
+    splitLargeWordFront, splitLargeWordBack = split_large_word(wordToTest, lengthToCheck - 1)
+    splitArray.append(splitLargeWordFront) #-- <this seems to be the answer to the problem. We'll see!
+    while is_word_too_large(splitLargeWordBack, lengthToCheck) == True:
+        splitLargeWordFront, splitLargeWordBack = split_large_word(splitLargeWordBack, lengthToCheck - 1)
+        splitArray.append(splitLargeWordFront)
+    # splitArray.append(splitLargeWordBack)
+    return splitLargeWordBack
 
 
 
@@ -44,13 +44,15 @@ class Text:
         chunkSize: int = 0
         for index, word in enumerate(splitString):
             splitWords: list = []
-            if is_word_too_large(word, self.maxCharacters - 1) == True:
-                splitLargeWord = split_large_word(word, self.maxCharacters - 2)
-                splitWords.append(splitLargeWord[0]) #-- <this seems to be the answer to the problem. We'll see!
-                while is_word_too_large(splitLargeWord[1], self.maxCharacters - 1) == True:
-                    splitLargeWord = split_large_word(splitLargeWord[1], self.maxCharacters - 2)
-                    splitWords.append(splitLargeWord[0])
-                word = splitLargeWord[1]
+            if is_word_too_large(word, self.maxCharacters - 2) == True:
+                word = parse_large_word_to_one_line(word, self.maxCharacters - 1, splitWords)
+            # if is_word_too_large(word, self.maxCharacters - 1) == True:
+            #     splitLargeWord = split_large_word(word, self.maxCharacters - 2)
+            #     splitWords.append(splitLargeWord[0]) #-- <this seems to be the answer to the problem. We'll see!
+            #     while is_word_too_large(splitLargeWord[1], self.maxCharacters - 1) == True:
+            #         splitLargeWord = split_large_word(splitLargeWord[1], self.maxCharacters - 2)
+            #         splitWords.append(splitLargeWord[0])
+            #     word = splitLargeWord[1]
             chunkSize = len(stringChunk)
             if chunkSize + len(word) < self.maxCharacters:
                 stringChunk += word
@@ -86,17 +88,9 @@ class Text:
 #-- TODO: delete after figuring it out. This section used only for testing
 if __name__ == "__main__":
 
-    beegWord = "Chargoggagoggmanchauggauggagoggchaubunagungamaugg"
-    wordList = []
-    parse_large_word_to_one_line(beegWord, 21, wordList)
-    print(wordList)
-    # split = split_large_word(beegWord, 20)
-    # parse_large_word_to_one_line(split, wordList, 21)
-    # wordList.append(split[0])
-    # while len(split[1]) > 22:
-    #     split = split_large_word(split[1], 20)
-    #     wordList.append(split[0])
-    # wordList.append(split[1])
+    # beegWord = "Chargoggagoggmanchauggauggagoggchaubunagungamaugg"
+    # wordList = []
+    # parse_large_word_to_one_line(beegWord, 21, wordList)
     # print(wordList)
 
 
@@ -107,39 +101,39 @@ if __name__ == "__main__":
     #                                                     #---------: nukupokaiwhenu-akita-                                                                     
     #                                                     #---------: natahu
     
-    # bleh = Text("When in the Course of human events, it becomes necessary for one people to dissolve the antidisestablishmentarianism bands which have connected them with another, and to assume among the powers of the earth, the separate and equal Floccinaucinihilipilification to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation. We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.")
-    # for i,v in enumerate(bleh.word_wrap):               #-- prints: When in the Course
-    #     print(f"{i:>3}", f"{v:23}", f"{len(v):>2}")     #---------: of human events, it
-    #                                                     #---------: becomes necessary
-    #                                                     #---------: for one people to
-    #                                                     #---------: dissolve the
-    #                                                     #---------: antidisestablishment- <- Now correct
-    #                                                     #---------: arianism bands which  <- Now correct
-    #                                                     #---------: have connected them
-    #                                                     #---------: with another, and to
-    #                                                     #---------: assume among the
-    #                                                     #---------: powers of the earth,
-    #                                                     #---------: the separate and
-    #                                                     #---------: equal ification to    <- However, now this one is incorrect
-    #                                                     #---------: which the Laws of
-    #                                                     #---------: Nature and of
-    #                                                     #---------: Nature's God entitle
-    #                                                     #---------: them, a decent
-    #                                                     #---------: respect to the
-    #                                                     #---------: opinions of mankind
-    #                                                     #---------: requires that they
-    #                                                     #---------: should declare the
-    #                                                     #---------: causes which impel
-    #                                                     #---------: them to the
-    #                                                     #---------: separation. We hold
-    #                                                     #---------: these truths to be
-    #                                                     #---------: self-evident, that
-    #                                                     #---------: all men are created
-    #                                                     #---------: equal, that they are
-    #                                                     #---------: endowed by their
-    #                                                     #---------: Creator with certain
-    #                                                     #---------: unalienable Rights,
-    #                                                     #---------: that among these are
-    #                                                     #---------: Life, Liberty and
-    #                                                     #---------: the pursuit of
-    #                                                     #---------: Happiness.
+    bleh = Text("When in the Course of human events, it becomes necessary for one people to dissolve the antidisestablishmentarianism bands which have connected them with another, and to assume among the powers of the earth, the separate and equal Floccinaucinihilipilification to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation. We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.")
+    for i,v in enumerate(bleh.word_wrap):               #-- prints: When in the Course
+        print(f"{i:>3}", f"{v:23}", f"{len(v):>2}")     #---------: of human events, it
+                                                        #---------: becomes necessary
+                                                        #---------: for one people to
+                                                        #---------: dissolve the
+                                                        #---------: antidisestablishment- <- Now correct
+                                                        #---------: arianism bands which  <- Now correct
+                                                        #---------: have connected them
+                                                        #---------: with another, and to
+                                                        #---------: assume among the
+                                                        #---------: powers of the earth,
+                                                        #---------: the separate and
+                                                        #---------: equal ification to    <- However, now this one is incorrect
+                                                        #---------: which the Laws of
+                                                        #---------: Nature and of
+                                                        #---------: Nature's God entitle
+                                                        #---------: them, a decent
+                                                        #---------: respect to the
+                                                        #---------: opinions of mankind
+                                                        #---------: requires that they
+                                                        #---------: should declare the
+                                                        #---------: causes which impel
+                                                        #---------: them to the
+                                                        #---------: separation. We hold
+                                                        #---------: these truths to be
+                                                        #---------: self-evident, that
+                                                        #---------: all men are created
+                                                        #---------: equal, that they are
+                                                        #---------: endowed by their
+                                                        #---------: Creator with certain
+                                                        #---------: unalienable Rights,
+                                                        #---------: that among these are
+                                                        #---------: Life, Liberty and
+                                                        #---------: the pursuit of
+                                                        #---------: Happiness.
