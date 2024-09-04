@@ -17,13 +17,12 @@ Returns a touple of the first part of the word (frontChunk + a hyphen) and the r
     return f"{frontChunk}-", backChunk
 
 def parse_large_word_to_one_line(wordToTest: str, lengthToCheck: int, splitArray: list):
-    # if is_word_too_large(wordToTest, lengthToCheck) == True:
+    """Breaks up words that are larger than one line to as many lines as it needs."""
     splitLargeWordFront, splitLargeWordBack = split_large_word(wordToTest, lengthToCheck - 1)
     splitArray.append(splitLargeWordFront) #-- <this seems to be the answer to the problem. We'll see!
     while is_word_too_large(splitLargeWordBack, lengthToCheck) == True:
         splitLargeWordFront, splitLargeWordBack = split_large_word(splitLargeWordBack, lengthToCheck - 1)
         splitArray.append(splitLargeWordFront)
-    # splitArray.append(splitLargeWordBack)
     return splitLargeWordBack
 
 
