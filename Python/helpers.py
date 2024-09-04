@@ -1,12 +1,17 @@
 """Helper functions and classes for serial communication with Arduino."""
 
 def is_word_too_large(word: str, maxSize: int):
+    """Checks if each word is longer or shorter than the max number of characters per line."""
     if len(word) > maxSize:
         return True
     else:
         return False
 
 def split_large_word(largeWord: str, splitLength: int):
+    """
+Splits a word larger than the allowed number of characters by the split length and automatically appends a hypen at the end of the first split chunk.
+Returns a touple of the first part of the word (frontChunk + a hyphen) and the remaining letters of the word (backChunk).
+    """
     frontChunk:str = largeWord[:splitLength]
     backChunk: str = largeWord[splitLength:]
     return f"{frontChunk}-", backChunk
@@ -103,10 +108,3 @@ if __name__ == "__main__":
                                                         #---------: Life, Liberty and
                                                         #---------: the pursuit of
                                                         #---------: Happiness.
-        
-
-
-
-
-
-
