@@ -25,8 +25,6 @@ def parse_large_word_to_one_line(wordToTest: str, lengthToCheck: int, splitArray
         splitArray.append(splitLargeWordFront)
     return splitLargeWordBack
 
-
-
 class Text:
     """Text to be pushed to the Adafruit 128x64 OLED screen through the Arduino serial communication."""
     def __init__(self, text: str):
@@ -49,10 +47,7 @@ class Text:
                 stringChunk = ""
                 for thing in splitWords:
                     stringArray.append(thing)
-
             chunkSize = len(stringChunk)
-
-
             if chunkSize + len(word) < self.maxCharacters:
                 stringChunk += word
             elif index < len(splitString) - 1:
