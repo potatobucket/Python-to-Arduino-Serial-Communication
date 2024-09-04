@@ -1,10 +1,21 @@
 """Helper functions and classes for serial communication with Arduino."""
 
+def is_word_too_large(word: str, maxSize: int):
+    if len(word) > maxSize:
+        return True
+    else:
+        return False
+
+def split_large_word(largeWord: str, splitLength: int):
+    frontChunk:str = largeWord[:splitLength]
+    backChunk: str = largeWord[splitLength:]
+    return f"{frontChunk}-", backChunk
+
 class Text:
     """Text to be pushed to the Adafruit 128x64 OLED screen through the Arduino serial communication."""
     def __init__(self, text: str):
         self.text = text
-        self.maxCharacters: int = 21
+        self.maxCharacters: int = 22
     
     @property
     def word_wrap(self):
