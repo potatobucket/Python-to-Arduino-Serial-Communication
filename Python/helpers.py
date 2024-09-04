@@ -52,7 +52,15 @@ class Text:
             #         splitLargeWord = split_large_word(splitLargeWord[1], self.maxCharacters - 2)
             #         splitWords.append(splitLargeWord[0])
             #     word = splitLargeWord[1]
+
+                stringArray.append(stringChunk)
+                stringChunk = ""
+                for thing in splitWords:
+                    stringArray.append(thing)
+
             chunkSize = len(stringChunk)
+
+
             if chunkSize + len(word) < self.maxCharacters:
                 stringChunk += word
             elif index < len(splitString) - 1:
@@ -100,7 +108,7 @@ if __name__ == "__main__":
     #                                                     #---------: nukupokaiwhenu-akita-                                                                     
     #                                                     #---------: natahu
     
-    bleh = Text("When in the Course of human events, it becomes necessary for one people to dissolve the antidisestablishmentarianism bands which have connected them with another, and to assume among the powers of the earth, the separate and equal Floccinaucinihilipilification to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation. We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness.")
+    bleh = Text("When in the Course of human events, it becomes necessary for one people to dissolve the antidisestablishmentarianism bands which have connected them with another, and to assume among the powers of the earth, the separate and equal Floccinaucinihilipilification to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation. We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Chargoggagoggmanchauggauggagoggchaubunagungamaugg and the pursuit of Happiness.")
     for i,v in enumerate(bleh.word_wrap):               #-- prints: When in the Course
         print(f"{i:>3}", f"{v:23}", f"{len(v):>2}")     #---------: of human events, it
                                                         #---------: becomes necessary
