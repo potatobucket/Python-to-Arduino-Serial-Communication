@@ -14,6 +14,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire1, OLED_RESET);
 const String AFFIRMATIVE = "Job's done!";
 const int COLOR = 1;
 const int MAX_CAPACITY = 1024;
+const int X_COORDINATE = 0;
+const int Y_COORDINATE = 0;
 
 String text;
 
@@ -28,29 +30,29 @@ unsigned char* gather_bytes(){
   unsigned char *bitmapBytes[MAX_CAPACITY];
 };
 
-void display_text_OLED(String string){
+void display_text_OLED(String string, int x, int y){
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 0);
+  display.setCursor(x, y);
   display.println(string);
   display.display();
 };
 
-void display_bitmap(const unsigned char *BITMAP_IMAGE){
+void display_bitmap_OLED(const unsigned char *BITMAP_IMAGE){
   display.clearDisplay();
   display.drawBitmap(0, 0, BITMAP_IMAGE, SCREEN_WIDTH, SCREEN_HEIGHT, COLOR);
   display.display();
 };
 
 void push_text_to_display(String whatToPush){
-  display_text_OLED(whatToPush);
+  display_text_OLED(whatToPush, X_COORDINATE, Y_COORDINATE);
   respond(AFFIRMATIVE);
 };
 
 void push_bitmap_to_display(){
-  const unsigned char PROGMEM IMAGE[] = {};
-  display_bitmap(IMAGE);
+  const unsigned char PROGMEM IMAGE[MAX_CAPACITY] = {};
+  // display_bitmap(IMAGE);
   respond(AFFIRMATIVE);
 };
 
