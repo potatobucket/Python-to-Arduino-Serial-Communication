@@ -1,10 +1,12 @@
-#-- TODO: fix word wrap so that words larger than max screen size work correctly when placed in a sentence
-
 import helpers
 import serial
 import time
 
-arduino = serial.Serial(port = 'COM3', baudrate = 115200, timeout = .1)
+arduinoPort: str = "COM3"
+arduinoBaudRate: int = 115200
+serialTimeOut: float = 0.1
+
+arduino = serial.Serial(port = arduinoPort, baudrate = arduinoBaudRate, timeout = serialTimeOut)
 
 def write_read(communication):
     """Handles reading and writing to the Arduino over serial communication."""
@@ -15,6 +17,6 @@ def write_read(communication):
 
 if __name__ == "__main__":
     while True:
-        quote = helpers.Text(input("What text would you like to send to the screen? ")) # Taking input from user
+        quote = helpers.Text(input("What text would you like to send to the screen? "))
         value = str(write_read(quote))
-        print(value) # printing the value
+        print(value)
