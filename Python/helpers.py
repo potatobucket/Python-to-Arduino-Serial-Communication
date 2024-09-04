@@ -16,6 +16,18 @@ Returns a touple of the first part of the word (frontChunk + a hyphen) and the r
     backChunk: str = largeWord[splitLength:]
     return f"{frontChunk}-", backChunk
 
+def parse_large_word_to_one_line(wordToTest: str, lengthToCheck: int, splitArray: list):
+    if is_word_too_large(wordToTest, lengthToCheck) == True:
+        splitLargeWordFront, splitLargeWordBack = split_large_word(wordToTest, lengthToCheck - 1)
+        splitArray.append(splitLargeWordFront) #-- <this seems to be the answer to the problem. We'll see!
+        while is_word_too_large(splitLargeWordBack, lengthToCheck) == True:
+            splitLargeWordFront, splitLargeWordBack = split_large_word(splitLargeWordBack, lengthToCheck - 1)
+            splitArray.append(splitLargeWordFront)
+        # splitArray.append(splitLargeWordBack)
+        return splitLargeWordBack
+
+
+
 class Text:
     """Text to be pushed to the Adafruit 128x64 OLED screen through the Arduino serial communication."""
     def __init__(self, text: str):
@@ -76,13 +88,16 @@ if __name__ == "__main__":
 
     beegWord = "Chargoggagoggmanchauggauggagoggchaubunagungamaugg"
     wordList = []
-    split = split_large_word(beegWord, 20)
-    wordList.append(split[0])
-    while len(split[1]) > 22:
-        split = split_large_word(split[1], 20)
-        wordList.append(split[0])
-    wordList.append(split[1])
+    parse_large_word_to_one_line(beegWord, 21, wordList)
     print(wordList)
+    # split = split_large_word(beegWord, 20)
+    # parse_large_word_to_one_line(split, wordList, 21)
+    # wordList.append(split[0])
+    # while len(split[1]) > 22:
+    #     split = split_large_word(split[1], 20)
+    #     wordList.append(split[0])
+    # wordList.append(split[1])
+    # print(wordList)
 
 
     # bigWord = "Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenu-akitanatahu"  
