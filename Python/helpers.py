@@ -2,10 +2,7 @@
 
 def is_word_too_large(word: str, maxSize: int):
     """Checks if each word is longer or shorter than the max number of characters per line."""
-    if len(word) > maxSize:
-        return True
-    else:
-        return False
+    return True if len(word) > maxSize else False
 
 def split_large_word(largeWord: str, splitLength: int):
     """
@@ -49,8 +46,9 @@ class Text:
             splitWords: list = []
             if is_word_too_large(word, self.maxCharacters - 2) == True:
                 word = parse_large_word_to_one_line(word, self.maxCharacters - 1, splitWords)
-                stringArray.append(stringChunk)
-                stringChunk = ""
+                if len(stringChunk) > 0:
+                    stringArray.append(stringChunk)
+                    stringChunk = ""
                 for thing in splitWords:
                     stringArray.append(thing)
             chunkSize = len(stringChunk)
