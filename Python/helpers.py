@@ -25,6 +25,12 @@ def parse_large_word_to_one_line(wordToTest: str, lengthToCheck: int, splitArray
         splitArray.append(splitLargeWordFront)
     return splitLargeWordBack
 
+def reset_chunk(string: str, size: int):
+    """Resets the stringChunk to an empty string (\"\") and the chunkSize to zero (0)."""
+    string = ""
+    size = 0
+    return string, size
+
 class Text:
     """Text to be pushed to the Adafruit 128x64 OLED screen through the Arduino serial communication."""
     def __init__(self, text: str):
@@ -56,13 +62,11 @@ class Text:
                     for thing in splitWords:
                         stringArray.append(thing)
                     splitWords.clear()
-                stringChunk = ""
-                chunkSize = 0
+                stringChunk, chunkSize = reset_chunk(stringChunk, chunkSize)
                 stringChunk += word
             else:
                 stringArray.append(stringChunk)
-                stringChunk = ""
-                chunkSize = 0
+                stringChunk, chunkSize = reset_chunk(stringChunk, chunkSize)
                 stringChunk += word
         stringArray.append(stringChunk)
         return stringArray
