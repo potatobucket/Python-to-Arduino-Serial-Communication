@@ -1,4 +1,4 @@
-# Python to Arduion Serial Communication
+# Python to Arduino Serial Communication
  Communicating with the Arduino through Python
 
  ## TODO:
