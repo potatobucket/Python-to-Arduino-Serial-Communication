@@ -28,6 +28,14 @@ def reset_chunk(string: str, size: int):
     size = 0
     return string, size
 
+def create_new_string_with_padded_spaces(stringArray: list, lineSize: int):
+    newString: str = ""
+    for line in stringArray:
+        if len(line) < lineSize:
+            line += " " * (lineSize - len(line))
+        newString += line
+    return newString
+
 class Text:
     """Text to be pushed to the Adafruit 128x64 OLED screen through the Arduino serial communication."""
     def __init__(self, text: str):
@@ -68,6 +76,7 @@ class Text:
                 stringChunk += word
         stringArray.append(stringChunk)
         return stringArray
+        # return create_new_string_with_padded_spaces(stringArray, self.maxCharacters - 1)
     
     def __repr__(self):
         return f"Text({self.text})"

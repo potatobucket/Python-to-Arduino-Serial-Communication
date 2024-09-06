@@ -14,10 +14,10 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire1, OLED_RESET);
 const String AFFIRMATIVE = "Job's done!";
 const int COLOR = 1;
 const int MAX_CAPACITY = 1024;
-const int X_COORDINATE = 0;
-const int Y_COORDINATE = 0;
 
 String text;
+int xCoordinate = 0;
+int yCoordinate = 0;
 
 /* -- Older stuff and/or stuff that didn't (doesn't?) work
  char* marquee;
@@ -46,7 +46,7 @@ void display_bitmap_OLED(const unsigned char *BITMAP_IMAGE){
 };
 
 void push_text_to_display(String whatToPush){
-  display_text_OLED(whatToPush, X_COORDINATE, Y_COORDINATE);
+  display_text_OLED(whatToPush, xCoordinate, yCoordinate);
   respond(AFFIRMATIVE);
 };
 
@@ -63,14 +63,19 @@ void respond(String response){
 
 //-- The stuff that does the things
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(1000000);
   display.begin();
   Serial.setTimeout(1);
   display.clearDisplay();
 }
 
 void  loop() {
-  while (!Serial.available());
-  text = Serial.readString();
-  push_text_to_display(text);
+  if (Serial.available()){
+    text = Serial.readString();
+    push_text_to_display(text);
+  }
+  // while (!Serial.available());
+  // text = Serial.readString();
+  // // Serial.print(text);
+  // push_text_to_display(text);
 }
