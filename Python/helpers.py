@@ -29,6 +29,9 @@ def reset_chunk(string: str, size: int):
     return string, size
 
 def create_new_string_with_padded_spaces(stringArray: list, lineSize: int):
+    """
+Creates a string of all the lines in the word wrap but padded out with enough spaces to match the line length.
+    """
     newString: str = ""
     for line in stringArray:
         if len(line) < lineSize:
