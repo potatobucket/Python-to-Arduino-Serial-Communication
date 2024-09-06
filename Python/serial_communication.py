@@ -18,5 +18,6 @@ def write_read(communication):
 if __name__ == "__main__":
     while True:
         quote = Text(input("What text would you like to send to the screen? "))
-        value = str(write_read(quote))
-        print(value)
+        for line in quote.word_wrap:
+            value = str(write_read(line))
+            print(value)

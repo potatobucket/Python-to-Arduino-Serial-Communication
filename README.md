@@ -2,7 +2,8 @@
  Communicating with the Arduino through Python
 
  ## TODO:
-  - Figure out how to push the text data to the Arduino in a way it likes.
+  - ~~Figure out how to push the text data to the Arduino in a way it likes.~~
+    - Figure out how to clear screen inbetween texts (every way I've tried so far has cleared each line as it wents)
   - Find out how many different sizes text can be on the OLED screen.
     - Reconfigure the code to automatically set the word wrap based on the size of the text on the OLED screen.
   - Figure out how to send ~1kb of data to push a 128x64 bitmap to the OLED screen via the Arduino.

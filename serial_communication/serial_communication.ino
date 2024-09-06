@@ -18,6 +18,8 @@ const int MAX_CAPACITY = 1024;
 String text;
 int xCoordinate = 0;
 int yCoordinate = 0;
+int characterSize = 8;
+int maxLines = 7;
 
 /* -- Older stuff and/or stuff that didn't (doesn't?) work
  char* marquee;
@@ -31,7 +33,7 @@ unsigned char* gather_bytes(){
 };
 
 void display_text_OLED(String string, int x, int y){
-  display.clearDisplay();
+  // display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(x, y);
@@ -67,15 +69,12 @@ void setup() {
   display.begin();
   Serial.setTimeout(1);
   display.clearDisplay();
+  display.display();
 }
 
 void  loop() {
-  if (Serial.available()){
-    text = Serial.readString();
-    push_text_to_display(text);
-  }
-  // while (!Serial.available());
-  // text = Serial.readString();
-  // // Serial.print(text);
-  // push_text_to_display(text);
+  while (!Serial.available());
+  text = Serial.readString();
+  push_text_to_display(text);
+  yCoordinate += characterSize % (characterSize * maxLines);
 }
