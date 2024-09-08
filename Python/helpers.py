@@ -1,5 +1,8 @@
 """Helper functions and classes for serial communication with Arduino."""
 
+from PIL import Image
+
+#-- Text handling --------------------------------------------------------------------------
 def is_word_too_large(word: str, maxSize: int):
     """Checks if each word is longer or shorter than the max number of characters per line."""
     return True if len(word) > maxSize else False
@@ -86,3 +89,59 @@ class Text:
     
     def __str__(self):
         return f"{self.text}"
+#-------------------------------------------------------------------------------------------
+
+#-- Image handling -------------------------------------------------------------------------
+def we_have_ascii_art_at_home(bitList: bytes, width: int, filename: str = "poor_mans_ascii"):
+    """Generates a .txt file of the saddest ASCII art you've ever seen in your life."""
+    smallString: str = ""
+    bigString: str = ""
+    for bit in bitList:
+        smallString += bin(bit)[2:].zfill(8)
+        if len(smallString) == width:
+            bigString += f"{smallString}\n"
+            smallString = ""
+        with open(f"{filename}.txt", "w") as asciiArtAtHome:
+            asciiArtAtHome.write(bigString)
+
+class Picture:
+    """Image to be pushed to the Adafruit 128x64 OLED screen through the Arduino serial communication."""
+    def __init__(self, imagePath: str, maxWidth: int = 128, maxHeight: int = 64):
+        self.imagePath = imagePath
+        self.maxWidth = maxWidth
+        self.maxHeight = maxHeight
+
+    @property
+    def convert_to_bitmap(self):
+        """Converts the image to a series of bytes that can be read by the Adafruit 128x64 OLED screen."""
+        with Image.open(self.imagePath) as image:
+            width, height = image.size
+            if image.mode != "RGBA":
+                image = image.convert("RGBA")
+            if width > self.maxWidth:
+                widthRatio = self.maxWidth / width
+                newHeight = int(widthRatio * height)
+                image = image.resize((self.maxWidth, newHeight))
+            if height > self.maxHeight:
+                heightRatio = self.maxHeight / height
+                newWidth = int(heightRatio * width)
+                image = image.resize((newWidth, self.maxHeight))
+            width, height = image.size
+            outgoingImage = Image.new("RGBA", (self.maxWidth, self.maxHeight), (0, 0, 0, 0))
+            outgoingWidth, outgoingHeight = outgoingImage.size
+            imageX = (outgoingWidth - width) // 2
+            imageY = (outgoingHeight - height) // 2
+            outgoingImage.paste(image, (imageX, imageY))
+            outgoingImage = outgoingImage.convert("1")
+            outgoingData = [str(x // 255) for x in outgoingImage.getdata()]
+            outgoingData = "".join(outgoingData)
+            outgoingData = int(outgoingData, 2).to_bytes(1024)
+            outgoingImage.close()
+        return outgoingData
+
+    def __repr__(self):
+        return f"Picture({self.imagePath})"
+    
+    def __str__(self):
+        return f"A picture with the filepath {self.imagePath}."
+#-------------------------------------------------------------------------------------------

@@ -20,20 +20,11 @@ int xCoordinate = 0;
 int yCoordinate = 0;
 int characterSize = 8;
 int maxLines = 7;
-
-/* -- Older stuff and/or stuff that didn't (doesn't?) work
- char* marquee;
- int x;
- String response = "And all the clouds that lour'd upon our house in the deep bosom of the ocean buried.";
-*/
+int maxYCoordinate = 64;
+uint8_t bitmapBytes[MAX_CAPACITY];
 
 //-- Functions (may create custom header to hold)
-unsigned char* gather_bytes(){
-  unsigned char *bitmapBytes[MAX_CAPACITY];
-};
-
 void display_text_OLED(String string, int x, int y){
-  // display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(x, y);
@@ -52,16 +43,40 @@ void push_text_to_display(String whatToPush){
   respond(AFFIRMATIVE);
 };
 
-void push_bitmap_to_display(){
-  const unsigned char PROGMEM IMAGE[MAX_CAPACITY] = {};
-  // display_bitmap(IMAGE);
+void check_if_text_should_be_cleared(int sizeToClearAt){
+  if (yCoordinate + characterSize == sizeToClearAt){
+    delay(500);
+    display.clearDisplay();
+    display.display();
+    yCoordinate = 0;
+  }
+};
+
+void serial_text(){
+  text = Serial.readString();
+  push_text_to_display(text);
+  yCoordinate += characterSize % (characterSize * maxLines);
+  check_if_text_should_be_cleared(maxYCoordinate);
+};
+
+uint8_t gather_bytes(){
+  Serial.readBytes(bitmapBytes, MAX_CAPACITY);
+};
+
+void push_bitmap_to_screen(){
+  xCoordinate = 0;
+  yCoordinate = 0;
+  gather_bytes();
+  display.clearDisplay();
+  display.drawBitmap(xCoordinate, yCoordinate, bitmapBytes, SCREEN_WIDTH, SCREEN_HEIGHT, 2);
+  display.display();
   respond(AFFIRMATIVE);
+  Serial.flush();
 };
 
 void respond(String response){
   Serial.print(response);
 };
-
 
 //-- The stuff that does the things
 void setup() {
@@ -74,7 +89,6 @@ void setup() {
 
 void  loop() {
   while (!Serial.available());
-  text = Serial.readString();
-  push_text_to_display(text);
-  yCoordinate += characterSize % (characterSize * maxLines);
+  // serial_text();
+  push_bitmap_to_screen();
 }

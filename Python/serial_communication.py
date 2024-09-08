@@ -3,7 +3,7 @@ import serial
 import time
 
 arduinoPort: str = "COM3"
-arduinoBaudRate: int = 1000000
+arduinoBaudRate: int = 1_000_000
 serialTimeOut: float = 0.1
 
 arduino = serial.Serial(port = arduinoPort, baudrate = arduinoBaudRate, timeout = serialTimeOut)
