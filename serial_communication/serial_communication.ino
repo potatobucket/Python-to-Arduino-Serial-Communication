@@ -21,7 +21,7 @@ int yCoordinate = 0;
 int characterSize = 8;
 int maxLines = 7;
 int maxYCoordinate = 64;
-uint8_t bitmapBytes[MAX_CAPACITY];
+uint8_t bitmapBytes[MAX_CAPACITY] = {};
 
 //-- Functions (may create custom header to hold)
 void display_text_OLED(String string, int x, int y){
