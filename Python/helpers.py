@@ -92,6 +92,15 @@ class Text:
 #-------------------------------------------------------------------------------------------
 
 #-- Image handling -------------------------------------------------------------------------
+def check_if_image_needs_rotated(imageToCheck: Image):
+    """Automatically rotates the image if it's taller than it is wide."""
+    imageWidth, imageHeight = imageToCheck.size
+    if imageHeight > imageWidth:
+        imageToCheck = imageToCheck.transpose(Image.Transpose.ROTATE_270)
+        return imageToCheck, imageToCheck.size
+    else:
+        return imageToCheck, imageToCheck.size
+
 def we_have_ascii_art_at_home(bitList: bytes, width: int, filename: str = "poor_mans_ascii"):
     """Generates a .txt file of the saddest ASCII art you've ever seen in your life."""
     smallString: str = ""
@@ -115,7 +124,7 @@ class Picture:
     def convert_to_bitmap(self):
         """Converts the image to a series of bytes that can be read by the Adafruit 128x64 OLED screen."""
         with Image.open(self.imagePath) as image:
-            width, height = image.size
+            image, (width, height) = check_if_image_needs_rotated(image)
             if image.mode != "RGBA":
                 image = image.convert("RGBA")
             if width > self.maxWidth:
