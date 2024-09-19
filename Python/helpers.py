@@ -125,6 +125,7 @@ class Picture:
         """Converts the image to a series of bytes that can be read by the Adafruit 128x64 OLED screen."""
         with Image.open(self.imagePath) as image:
             image, (width, height) = check_if_image_needs_rotated(image)
+            # width, height = image.size
             if image.mode != "RGBA":
                 image = image.convert("RGBA")
             if width > self.maxWidth:
@@ -146,6 +147,7 @@ class Picture:
             outgoingData = "".join(outgoingData)
             outgoingData = int(outgoingData, 2).to_bytes(1024)
             outgoingImage.close()
+            # print(outgoingData)
         return outgoingData
 
     def __repr__(self):

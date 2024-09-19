@@ -19,7 +19,7 @@ String text;
 int xCoordinate = 0;
 int yCoordinate = 0;
 int characterSize = 8;
-int maxLines = 7;
+int maxLines = 8;
 int maxYCoordinate = 64;
 uint8_t bitmapBytes[MAX_CAPACITY] = {};
 
@@ -44,9 +44,9 @@ void push_text_to_display(String whatToPush){
 };
 
 void check_if_text_should_be_cleared(int sizeToClearAt){
-  if (yCoordinate + characterSize == sizeToClearAt){
-    delay(500);
+  if (yCoordinate + characterSize >= sizeToClearAt){
     display.clearDisplay();
+    delay(1000);
     display.display();
     yCoordinate = 0;
   }
@@ -66,12 +66,13 @@ uint8_t gather_bytes(){
 void push_bitmap_to_screen(){
   xCoordinate = 0;
   yCoordinate = 0;
-  gather_bytes();
+  // gather_bytes();
+  Serial.readBytes(bitmapBytes, MAX_CAPACITY);
   display.clearDisplay();
   display.drawBitmap(xCoordinate, yCoordinate, bitmapBytes, SCREEN_WIDTH, SCREEN_HEIGHT, 2);
   display.display();
-  respond(AFFIRMATIVE);
-  Serial.flush();
+  // respond(AFFIRMATIVE);
+  // Serial.flush();
 };
 
 void respond(String response){
@@ -89,6 +90,11 @@ void setup() {
 
 void  loop() {
   while (!Serial.available());
-  // serial_text();
-  push_bitmap_to_screen();
+  serial_text();
+  // check_if_text_should_be_cleared(maxLines);
+  // push_bitmap_to_screen();
+  // for (int i = 0; i < MAX_CAPACITY; i++){
+  //   Serial.print(bitmapBytes[i]);
+  // }
+  // Serial.flush();
 }

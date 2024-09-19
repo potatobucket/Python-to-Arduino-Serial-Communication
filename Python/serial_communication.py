@@ -1,4 +1,4 @@
-from helpers import Text
+from helpers import Text, Picture
 import serial
 import time
 
@@ -17,6 +17,18 @@ def write_read(communication):
 
 if __name__ == "__main__":
     while True:
+        # unneeded = input("Press enter to send picture")
+        # value = str(write_read(Picture("C:\\Users\\potat\\Desktop\\Old\\Chris Cutout small.png").convert_to_bitmap))
+        # print(value)
+
+        # bitmap = Picture("C:\\Users\\potat\\Desktop\\Old\\Chris Cutout small.png").convert_to_bitmap
+        # arduino.write(bitmap)
+        # time.sleep(3)
+        # data = arduino.readline()
+        # for i in bitmap:
+        #     print(i)
+        # arduino.flush()
+
         quote = Text(input("What text would you like to send to the screen? "))
         for line in quote.word_wrap:
             value = str(write_read(line))
